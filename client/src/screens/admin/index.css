@@ -4,7 +4,7 @@ body{
 
 #rootDiv {
     text-align: center;
-    margin-top: 25vh;
+    margin-top: 5vh;
     align-items: center;
 }
 
@@ -22,6 +22,16 @@ body{
     max-width: 70vw;
     padding: 30px 0px;
     margin: 0 auto;
+}
+
+#question-area {
+    margin-top: 15px;
+}
+
+#paper-question {
+    width: 70vw;
+    margin: 0 auto;
+    padding-bottom: 5px;
 }
 
 #start-button {
