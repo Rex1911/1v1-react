@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import Question from '../../components/Question';
-import Editor from './EditorComponent/';
+import Editor from '../../components/Editor';
 import Modal from '../../components/Modal';
 import io from 'socket.io-client';
 

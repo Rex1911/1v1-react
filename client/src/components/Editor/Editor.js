@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import brace from "brace";
 import AceEditor from "react-ace";
 
-import "./index.css";
+import "./editor.css";
 
 import "brace/mode/java";
 import "brace/mode/c_cpp";
@@ -37,6 +37,8 @@ export default (props) => {
                 break;
             case "4":
                 setLang({lang:"java", langCode: 4});
+                break;
+            default:
                 break;
         }
     }
