@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
@@ -6,16 +6,20 @@ import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import _find from "lodash/find";
+import TextField from "@material-ui/core/TextField";
+import Question from "../../components/Question";
+import io from 'socket.io-client';
 
 import "./index.css";
-import { TextField } from "@material-ui/core";
 
 export default () => {
     const [selectValue, setSelectValue] = useState();
     const [selectedRoom, setSelectedRoom] = useState(1);
+    const [totalTime, setTotalTime] = useState(20);
     const [questions, setQuestions] = useState([]);
     const [questionHtml, setQuestionHtml] = useState(null);
 
+    let socket = useRef();
     useEffect(() => {
         async function fetchData() {
             let res = await fetch("http://localhost:5000/api/admin");
@@ -23,6 +27,11 @@ export default () => {
             setQuestions(data);
         }
         fetchData();
+        socket.current = io('http://localhost:5000');
+
+        return () => {
+            socket.current.disconnect();
+        }
     }, []);
 
     const handleSelectChange = e => {
@@ -42,12 +51,16 @@ export default () => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        console.log("Submitted form!");
+        socket.current.emit('startContest', {questionID: selectValue, roomID: selectedRoom, totalTime: totalTime})
     };
 
-    const createMarkup = () => {
-        return { __html: questionHtml };
-    };
+    const handleTimeChange = (e) => {
+        if (parseInt(e.target.value) <= 0) {
+            setTotalTime(20);
+            return;
+        }
+        setTotalTime(e.target.value);
+    } 
 
     return (
         <div id="rootDiv">
@@ -90,6 +103,17 @@ export default () => {
                             required
                         />
                     </FormControl>
+                    <FormControl id="room-field" error>
+                        <TextField
+                            value={totalTime}
+                            onChange={handleTimeChange}
+                            label="Time"
+                            type="number"
+                            margin="normal"
+                            variant="filled"
+                            required
+                        />
+                    </FormControl>
                     <br />
                     <Button
                         type="submit"
@@ -101,18 +125,7 @@ export default () => {
                     </Button>
                 </Paper>
             </form>
-            {questionHtml !== null? <div id="question-area">
-                <Paper id="paper-question">
-                    <Typography
-                        variant="h4"
-                        gutterBottom
-                        style={{ fontFamily: "Montserrat"}}
-                    >
-                        QUESTION
-                    </Typography>
-                    <div dangerouslySetInnerHTML={createMarkup()} style={{textAlign: 'left', margin: 30}}></div>
-                </Paper>
-            </div>: null}
+            {questionHtml !== null? <Question questionHtml={questionHtml} width="70vw"/>: null}
         </div>
     );
 };

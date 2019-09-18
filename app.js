@@ -8,6 +8,7 @@ var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var {c, cpp, python, java} = require('compile-run');
 var keys = require('./public/javascripts/keys.js');
+var cors = require('cors');
 
 //========================
 // MongoDB setup
@@ -21,6 +22,7 @@ seedDB();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -46,8 +48,16 @@ app.post("/check", (req,res) => {
     }
 });
 
-app.get("/admin",(req,res) =>{
-    res.render("admin-index.ejs");
+app.get("/api/admin", async (req,res) =>{
+    let questions;
+    try{
+        questions = await Question.find()
+    } catch(err) {
+        console.log(err);
+        res.status(500).json({error: "Failed to get questions from DB"});
+        return;
+    }
+    res.status(200).send(questions);
 });
 
 app.get("/admin/:day", (req,res) => {
@@ -69,8 +79,9 @@ app.get("/download", (req,res) => {
 // STARTING THE SERVER
 //=======================
 
-var server = app.listen(3000, function(){
-  console.log('listening on *:3000');
+const PORT = process.env.PORT || 5000
+var server = app.listen(PORT, function(){
+  console.log('Server started on port: ' + PORT);
 });
 
 //========================
@@ -81,6 +92,7 @@ var socket = require("socket.io")
 var io = socket().listen(server);
 
 io.on('connection', function(socket){
+    console.log("Client joined")
     socket.on("joinContest", (id) => {
         socket.join(id);
     });
@@ -103,4 +115,8 @@ io.on('connection', function(socket){
     socket.on('error', function(e){
     	console.log(e);
     });
+
+    socket.on('disconnect', () => {
+        console.log('Client disconnected')
+    })
 });

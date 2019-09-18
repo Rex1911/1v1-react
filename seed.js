@@ -332,6 +332,17 @@ let data = [
         noOfPrivateCases: 7,
         privateCases: ["7\n40 80\n39 80\n125 100\n250 800\n111 110\n100 190\n119 190"],
         privateCasesAnswer: ["39","80","100","549","110","89","190"]
+    },
+    {
+        day: 1,
+        question: "<p>Add two number</p>",
+        title: "Add two numbers",
+        noOfTestCases: 3,
+        testCases: ["3\n2 2\n5 5\n10 10"],
+        testCasesAnswer: ["4", "10", "20"],
+        noOfPrivateCases: 3,
+        privateCases: ["3\n3 3\n4 4\n6 6"],
+        privateCasesAnswer: ["4", "8", "12"]
     }
 ];
 

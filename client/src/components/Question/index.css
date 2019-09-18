@@ -1,0 +1,15 @@
+#paper-question {
+    margin: 20px auto;
+    padding-bottom: 5px;
+}
+
+#questionText {
+    font-family: "Montserrat";
+    padding-top: 15px;
+    text-align: center;
+}
+
+#questionArea {
+    text-align: left;
+    margin: 30px;
+}
