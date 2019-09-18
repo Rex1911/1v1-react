@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import Question from '../../components/Question';
 import Editor from './EditorComponent/';
-import Modal from './Modal/';
+import Modal from '../../components/Modal';
 import io from 'socket.io-client';
 
 export default (props) => {
@@ -46,7 +46,7 @@ export default (props) => {
     }
     
     let modal;
-    if(gameState === "waiting") modal = <Modal>Waiting for admin to start</Modal>
+    if(gameState === "waiting") modal = <Modal>WAITING FOR ADMIN TO START</Modal>
     else if(gameState === "lost") modal = <Modal>The other person won</Modal>
     else if(gameState === "timeup") modal = <Modal>The times up!</Modal>
     else modal = null;
