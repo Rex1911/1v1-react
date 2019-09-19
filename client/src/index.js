@@ -14,8 +14,6 @@ const theme = createMuiTheme({
     }
 });
 
-console.log(theme)
-
 ReactDOM.render(<MuiThemeProvider theme={theme}><App /></MuiThemeProvider>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

@@ -1,7 +1,8 @@
-import React, {useState} from "react";
+import React from "react";
 // eslint-disable-next-line
 import brace from "brace";
 import AceEditor from "react-ace";
+import displayTime from '../../util/time'
 
 import "./editor.css";
 
@@ -12,63 +13,37 @@ import "brace/theme/dracula";
 import "brace/ext/language_tools";
 
 export default (props) => {
-    const [lang,setLang] = useState({lang: "c_cpp", langCode: 1});
-    const [code, setCode] = useState();
-    
-    const displayTime = () => {
-        // console.log(props.time)
-        let mins = Math.floor(props.time/60);
-        mins = (mins < 10 ? '0':'') + mins 
-        let secs = props.time%60;
-        secs = (secs < 10 ? '0':'') + secs 
-        return `${mins}:${secs}`
-    }
-    
-    const handleLangChange = (e) => {
-        switch(e.target.value) {
-            case "1":
-                setLang({lang:"c_cpp", langCode: 1});
-                break;
-            case "2":
-                setLang({lang:"c_cpp", langCode: 2});
-                break;
-            case "3":
-                setLang({lang:"python", langCode: 3});
-                break;
-            case "4":
-                setLang({lang:"java", langCode: 4});
-                break;
-            default:
-                break;
-        }
+    const setResultOutput = () => {
+        let {passedFailedList} = props;
+        let list = passedFailedList.map((result, i) => {
+            if(result === 'passed') return <p key={i}>Test Case {i+1} passed</p>
+            return <p key={i}>Test Case {i+1} failed</p>
+        })
+        return list;
     }
 
-    const handleEditorChange = (value) => {
-        setCode(value);
-    }
-    
     return (
         <div style={{ overflowY: "hidden" }}>
             <div id="topBar">
-                <select id="lang" onChange={handleLangChange}>
+                <select id="lang" onChange={props.onLangChange}>
                     <option value="1">C</option>
                     <option value="2">C++</option>
                     <option value="3">Python</option>
                     <option value="4">Java</option>
                 </select>
-                <div id="timer">{displayTime()}</div>
+                <div id="timer">{displayTime(props.time)}</div>
                 <button className="editor-button" id="run" onClick={props.onClickRun}>
                     Run
                 </button>
-                <button className="editor-button" id="submit">
+                <button className="editor-button" id="submit" onClick={props.onClickSubmit}>
                     Submit
                 </button>
             </div>
 
             <AceEditor
-                value={code}
-                onChange={handleEditorChange}
-                mode={lang.lang}
+                value={props.code}
+                onChange={props.onCodeChange}
+                mode={props.mode}
                 theme="dracula"
                 name="UNIQUE_ID_OF_DIV"
                 height="60vh"
@@ -86,7 +61,7 @@ export default (props) => {
                 </div>
                 <div id="bottom-right">
                     <div id="input">Result:</div>
-                    <pre id="input-text"></pre>
+                    <pre id="input-text">{setResultOutput()}</pre>
                 </div>
             </div>
         </div>
