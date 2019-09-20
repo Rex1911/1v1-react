@@ -159,7 +159,7 @@ export default (props) => {
         <div>
             {modal}
             <Question
-                questionHtml={questionData ? questionData.question : ""}
+                questionData={questionData ? {...questionData.question, title:questionData.title} : ""}
                 width="90vw"
             />
             <Editor

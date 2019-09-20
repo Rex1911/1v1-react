@@ -4,9 +4,7 @@ import Typography from "@material-ui/core/Typography";
 
 import './question.css'
 export default props => {
-    const createMarkup = () => {
-        return { __html: props.questionHtml };
-    }
+    let {questionData} = props
     
     return (
         <Paper id="paper-question" style={{width: props.width}}>
@@ -15,12 +13,22 @@ export default props => {
                 gutterBottom
                 id="questionText"
             >
-                QUESTION
+                {questionData.title}
             </Typography>
-            <div
-                dangerouslySetInnerHTML={createMarkup()}
-                id="questionArea"
-            ></div>
+            <div id="questionArea">
+                <Typography variant="subtitle2">QUESTION</Typography>
+                <pre style={{fontSize: 15}}>{questionData.main}</pre>
+                <Typography variant="subtitle2">INPUT FORMAT</Typography>
+                <pre style={{fontSize: 15}}>{questionData.input}</pre>
+                <Typography variant="subtitle2">OUTPUT FORMAT</Typography>
+                <pre style={{fontSize: 15}}>{questionData.output}</pre>
+                <Typography variant="subtitle2">CONSTRAINTS</Typography>
+                <pre style={{fontSize: 15}}>{questionData.constraints}</pre>
+                <Typography variant="subtitle2">INPUT EXAMPLE</Typography>
+                <pre style={{fontSize: 15, backgroundColor:"#EAECEE", padding: 10}}>{questionData.exampleIp}</pre>
+                <Typography variant="subtitle2">OUTPUT EXAMPLE</Typography>
+                <pre style={{fontSize: 15, backgroundColor:"#EAECEE", padding: 10}}>{questionData.exampleOp}</pre>
+            </div>
         </Paper>
     );
 };

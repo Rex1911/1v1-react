@@ -14,7 +14,7 @@ var cors = require('cors');
 // MongoDB setup
 //========================
 mongoose.connect("mongodb://localhost/questionsDB", { useNewUrlParser: true });
-seedDB();
+// seedDB();
 
 //=======================
 // View engine setup
@@ -58,6 +58,17 @@ app.get("/api/admin", async (req,res) =>{
         return;
     }
     res.status(200).send(questions);
+});
+
+app.post('/api/question', async (req, res) => {
+    let data = req.body;
+    let question = new Question(data);
+    try {
+        await question.save()
+        res.send({isSaved: true});
+    } catch(err) {
+        res.send({isSaved: false, err})
+    }
 });
 
 app.get("/admin/:day", (req,res) => {

@@ -2,7 +2,15 @@ const mongoose = require('mongoose');
 
 const questionsSchema = mongoose.Schema({
     day: Number,
-    question: String,
+    question: {
+        main: String,
+        input: String,
+        output: String,
+        constraints: String,
+        exampleIp: String,
+        exampleOp: String,
+        explanation: String
+    },
     title: String,
     noOfTestCases: Number,
     testCases: [String],

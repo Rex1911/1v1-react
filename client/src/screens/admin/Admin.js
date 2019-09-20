@@ -17,12 +17,12 @@ export default () => {
     const [selectedRoom, setSelectedRoom] = useState(1);
     const [totalTime, setTotalTime] = useState(20);
     const [questions, setQuestions] = useState([]);
-    const [questionHtml, setQuestionHtml] = useState(null);
+    const [questionData, setQuestionData] = useState(null);
 
     let socket = useRef();
     useEffect(() => {
         async function fetchData() {
-            let res = await fetch("http://localhost:5000/api/admin");
+            let res = await fetch("/api/admin");
             let data = await res.json();
             setQuestions(data);
         }
@@ -36,9 +36,9 @@ export default () => {
 
     const handleSelectChange = e => {
         setSelectValue(e.target.value);
-        if(e.target.value === '') {setQuestionHtml(null); return}
+        if(e.target.value === '') {setQuestionData(null); return}
         let question = _find(questions, { _id: e.target.value });
-        setQuestionHtml(question.question);
+        setQuestionData({...question.question,title:question.title});
     };
 
     const handleRoomChange = e => {
@@ -125,7 +125,7 @@ export default () => {
                     </Button>
                 </Paper>
             </form>
-            {questionHtml !== null? <Question questionHtml={questionHtml} width="70vw"/>: null}
+            {questionData !== null? <Question questionData={questionData} width="70vw"/>: null}
         </div>
     );
 };
