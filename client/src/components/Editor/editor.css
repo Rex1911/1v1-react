@@ -13,6 +13,7 @@
     background: none;
     font-family: 'Roboto', sans-serif;
     padding: 5px;
+    width: 80px;
     margin: 5px;
     color: #ABB2B9;
     border: 2px solid #ABB2B9;
@@ -73,7 +74,7 @@
     max-width: 100%;
     background-color: #273746;
     color: white;
-    padding:10px;
+    padding:20px;
     overflow: scroll;
     margin: 0;
 }
@@ -130,3 +131,13 @@
     padding: 0 10px;
     border-radius: 5px;
   }
+  
+  #passed {
+      font-weight: bold;
+      color: green;
+  }
+
+  #failed {
+    font-weight: bold;
+    color: #D35400;
+}

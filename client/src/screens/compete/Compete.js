@@ -6,7 +6,6 @@ import io from 'socket.io-client';
 import displayTime from '../../util/time';
 
 export default (props) => {
-    console.log("Rendered")
     const [gameState, setGameState] = useState("waiting");
     const [questionData, setQuestionData] = useState();
     const [totalTime, setTotalTime] = useState()
@@ -32,7 +31,10 @@ export default (props) => {
                 setTimeElapsed(currentTime => currentTime + 1)
             },1000)
         })
-        socket.current.on('lost', () => setGameState("lost"))
+        socket.current.on('lost', () => {
+            setGameState("lost")
+            clearInterval(timer.current);
+        })
         
         return () => {
             socket.current.disconnect();
@@ -70,7 +72,7 @@ export default (props) => {
     }
     
     const handleRun = async () => {
-        setOutput('');
+        setOutput('Compiling...');
         setPassedFailedList([])
         let res =  await fetch('http://localhost:8080/compile', {
             method: 'POST',
@@ -104,7 +106,7 @@ export default (props) => {
     }
 
     const handleSubmit = async () => {
-        setOutput('');
+        setOutput('Compiling...');
         setPassedFailedList([]);
         let res =  await fetch('http://localhost:8080/compile', {
             method: 'POST',
@@ -139,6 +141,7 @@ export default (props) => {
         if(_correctAnswers === questionData.noOfPrivateCases) {
             clearInterval(timer.current);
             setGameState('won');
+            socket.current.emit('gameOver', props.match.params.roomid)
         }
         setCorrectAnswers(_correctAnswers);
         setOutput(stdout);

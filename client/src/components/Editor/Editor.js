@@ -16,8 +16,8 @@ export default (props) => {
     const setResultOutput = () => {
         let {passedFailedList} = props;
         let list = passedFailedList.map((result, i) => {
-            if(result === 'passed') return <p key={i}>Test Case {i+1} passed</p>
-            return <p key={i}>Test Case {i+1} failed</p>
+            if(result === 'passed') return <p key={i}>Test Case {i+1} <span id="passed">passed</span></p>
+            return <p key={i}>Test Case {i+1} <span id="failed">failed</span></p>
         })
         return list;
     }
@@ -33,10 +33,10 @@ export default (props) => {
                 </select>
                 <div id="timer">{displayTime(props.time)}</div>
                 <button className="editor-button" id="run" onClick={props.onClickRun}>
-                    Run
+                    RUN
                 </button>
                 <button className="editor-button" id="submit" onClick={props.onClickSubmit}>
-                    Submit
+                    SUBMIT
                 </button>
             </div>
 
