@@ -48,7 +48,7 @@ app.post("/check", (req,res) => {
     }
 });
 
-app.get("/api/admin", async (req,res) =>{
+app.get("/api/question", async (req,res) =>{
     let questions;
     try{
         questions = await Question.find()
@@ -68,6 +68,28 @@ app.post('/api/question', async (req, res) => {
         res.send({isSaved: true});
     } catch(err) {
         res.send({isSaved: false, err})
+    }
+});
+
+app.put('/api/question', async (req, res) => {
+    let data = req.body;
+    try{
+        await Question.findByIdAndUpdate(data._id, data).exec();
+        res.send({status:'success'})
+    } catch (e) {
+        console.log(e);
+        res.send({status:'error'})
+    }
+});
+
+app.delete('/api/question', async (req, res) => {
+    let {id} = req.body
+    try{
+        await Question.findByIdAndDelete(id).exec();
+        res.send({status: 'success'})
+    } catch(e) {
+        console.log(e)
+        res.send({status: 'error'})
     }
 });
 

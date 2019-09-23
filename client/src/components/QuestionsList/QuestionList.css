@@ -1,7 +1,6 @@
 #questionListRoot {
-    width: 70vw;
     margin: 0 auto;
     margin-top: 20px;
-    max-height: 50vh;
-    overflow-y: scroll;
+    height: 90vh;
+    overflow-y: auto;
 }

@@ -22,7 +22,7 @@ export default () => {
     let socket = useRef();
     useEffect(() => {
         async function fetchData() {
-            let res = await fetch("/api/admin");
+            let res = await fetch("/api/question");
             let data = await res.json();
             setQuestions(data);
         }
