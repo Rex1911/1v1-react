@@ -29,7 +29,7 @@ export default () => {
             setQuestions(data);
         }
         fetchData();
-        socket.current = io("http://localhost:5000");
+        socket.current = io();
 
         return () => {
             socket.current.disconnect();
@@ -61,6 +61,10 @@ export default () => {
             roomID: selectedRoom,
             totalTime: totalTime
         });
+        setSelectValue('');
+        setSelectedRoom('');
+        setTotalTime('');
+        setQuestionData(null);
     };
 
     const handleTimeChange = e => {

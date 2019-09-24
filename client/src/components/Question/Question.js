@@ -28,6 +28,8 @@ export default props => {
                 <pre style={{fontSize: 15, backgroundColor:"#EAECEE", padding: 10}}>{questionData.exampleIp}</pre>
                 <Typography variant="subtitle2">OUTPUT EXAMPLE</Typography>
                 <pre style={{fontSize: 15, backgroundColor:"#EAECEE", padding: 10}}>{questionData.exampleOp}</pre>
+                <Typography variant="subtitle2">EXPLANATION</Typography>
+                <pre style={{fontSize: 15}}>{questionData.explanation}</pre>
             </div>
         </Paper>
     );

@@ -23,9 +23,9 @@
 }
 
 .appbar-content:hover {
-    -webkit-box-shadow: 1px 1px 5px 1px rgba(0,0,0,0.19);
--moz-box-shadow: 1px 1px 5px 1px rgba(0,0,0,0.19);
-box-shadow: 1px 1px 5px 1px rgba(0,0,0,0.19);
+    -webkit-box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.19);
+    -moz-box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.19);
+    box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.19);
 }
 
 #active {
@@ -35,7 +35,7 @@ box-shadow: 1px 1px 5px 1px rgba(0,0,0,0.19);
 
 #active:hover {
     background-color: #1976d2;
-    -webkit-box-shadow: 1px 1px 5px 1px rgba(0,0,0,0.19);
--moz-box-shadow: 1px 1px 5px 1px rgba(0,0,0,0.19);
-box-shadow: 1px 1px 5px 1px rgba(0,0,0,0.19);
+    -webkit-box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.19);
+    -moz-box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.19);
+    box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.19);
 }

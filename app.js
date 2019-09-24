@@ -1,111 +1,38 @@
-var express = require('express');
-var path = require('path');
-var app = express();
-var http = require('http').Server(app);
-var Question = require("./models/questionsModel");
-var seedDB = require("./seed");
-var mongoose = require('mongoose');
-var bodyParser = require('body-parser');
-var {c, cpp, python, java} = require('compile-run');
-var keys = require('./public/javascripts/keys.js');
-var cors = require('cors');
-
+const express = require('express');
+const path = require('path');
+const app = express();
+const http = require('http').Server(app);
+const Question = require("./models/questionsModel");
+const seedDB = require("./seed");
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const {c, cpp, python, java} = require('compile-run');
+const keys = require('./public/javascripts/keys.js');
+const cors = require('cors');
+const apiRoutes = require('./routes/api');
 //========================
 // MongoDB setup
 //========================
-mongoose.connect("mongodb://localhost/questionsDB", { useNewUrlParser: true });
+mongoose.connect("mongodb://localhost/questionsDB", { useNewUrlParser: true, useUnifiedTopology: true});
 // seedDB();
 
 //=======================
-// View engine setup
+// Middleware
 //=======================
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
-
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'client', 'build')));
 app.use(bodyParser.urlencoded({ extended: false }))
 
 //======================
 //     ROUTES
 //======================
 
-app.get("/", (req,res) => {
-    res.render("index");
-});
+app.use('/api/', apiRoutes)
 
-app.get("/contest/:id", (req,res) => {
-    res.render("contest", {id:req.params.id});
-});
-
-app.post("/check", (req,res) => {
-    if(req.body.username==keys.verify.username && req.body.password==keys.verify.password){
-        res.send("verified");
-    } else{
-        res.send("fail");
-    }
-});
-
-app.get("/api/question", async (req,res) =>{
-    let questions;
-    try{
-        questions = await Question.find()
-    } catch(err) {
-        console.log(err);
-        res.status(500).json({error: "Failed to get questions from DB"});
-        return;
-    }
-    res.status(200).send(questions);
-});
-
-app.post('/api/question', async (req, res) => {
-    let data = req.body;
-    let question = new Question(data);
-    try {
-        await question.save()
-        res.send({isSaved: true});
-    } catch(err) {
-        res.send({isSaved: false, err})
-    }
-});
-
-app.put('/api/question', async (req, res) => {
-    let data = req.body;
-    try{
-        await Question.findByIdAndUpdate(data._id, data).exec();
-        res.send({status:'success'})
-    } catch (e) {
-        console.log(e);
-        res.send({status:'error'})
-    }
-});
-
-app.delete('/api/question', async (req, res) => {
-    let {id} = req.body
-    try{
-        await Question.findByIdAndDelete(id).exec();
-        res.send({status: 'success'})
-    } catch(e) {
-        console.log(e)
-        res.send({status: 'error'})
-    }
-});
-
-app.get("/admin/:day", (req,res) => {
-    Question.find({day: req.params.day}, (err,questionsList) => {
-        if(err) {
-            console.log(err);
-        } else {
-            //Basically sends all the questions in the DB to front end to populate the dropdown
-            res.render("admin", {questions:questionsList});
-        }
-    });
-});
-
-app.get("/download", (req,res) => {
-    res.download("math.txt");
+app.get("*", (req,res) => {
+    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 });
 
 //=======================
