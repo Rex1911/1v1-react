@@ -1,0 +1,41 @@
+#appbar {
+    display: flex;
+    background-color: white;
+    height: 10vh;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.875rem;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 500;
+    line-height: 1.75;
+    letter-spacing: 0.02857em;
+    text-transform: uppercase;
+}
+
+.appbar-content {
+    text-decoration: none;
+    color: black;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+}
+
+.appbar-content:hover {
+    -webkit-box-shadow: 1px 1px 5px 1px rgba(0,0,0,0.19);
+-moz-box-shadow: 1px 1px 5px 1px rgba(0,0,0,0.19);
+box-shadow: 1px 1px 5px 1px rgba(0,0,0,0.19);
+}
+
+#active {
+    background-color: #2196f3;
+    color: white;
+}
+
+#active:hover {
+    background-color: #1976d2;
+    -webkit-box-shadow: 1px 1px 5px 1px rgba(0,0,0,0.19);
+-moz-box-shadow: 1px 1px 5px 1px rgba(0,0,0,0.19);
+box-shadow: 1px 1px 5px 1px rgba(0,0,0,0.19);
+}

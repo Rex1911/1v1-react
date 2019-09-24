@@ -8,7 +8,9 @@ import Typography from "@material-ui/core/Typography";
 import _find from "lodash/find";
 import TextField from "@material-ui/core/TextField";
 import Question from "../../components/Question";
-import io from 'socket.io-client';
+import AppBar from "../../components/AppBar";
+import { Fragment } from "react";
+import io from "socket.io-client";
 
 import "./admin.css";
 
@@ -27,18 +29,21 @@ export default () => {
             setQuestions(data);
         }
         fetchData();
-        socket.current = io('http://localhost:5000');
+        socket.current = io("http://localhost:5000");
 
         return () => {
             socket.current.disconnect();
-        }
+        };
     }, []);
 
     const handleSelectChange = e => {
         setSelectValue(e.target.value);
-        if(e.target.value === '') {setQuestionData(null); return}
+        if (e.target.value === "") {
+            setQuestionData(null);
+            return;
+        }
         let question = _find(questions, { _id: e.target.value });
-        setQuestionData({...question.question,title:question.title});
+        setQuestionData({ ...question.question, title: question.title });
     };
 
     const handleRoomChange = e => {
@@ -51,81 +56,93 @@ export default () => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        socket.current.emit('startContest', {questionID: selectValue, roomID: selectedRoom, totalTime: totalTime})
+        socket.current.emit("startContest", {
+            questionID: selectValue,
+            roomID: selectedRoom,
+            totalTime: totalTime
+        });
     };
 
-    const handleTimeChange = (e) => {
+    const handleTimeChange = e => {
         if (parseInt(e.target.value) <= 0) {
             setTotalTime(20);
             return;
         }
         setTotalTime(e.target.value);
-    } 
+    };
 
     return (
-        <div id="rootDiv">
-            <form autoComplete="off" onSubmit={handleSubmit}>
-                <Paper id="paper">
-                    <Typography
-                        variant="h4"
-                        gutterBottom
-                        style={{ fontFamily: "Montserrat" }}
-                    >
-                        START A ROOM
-                    </Typography>
-                    <FormControl variant="filled" id="select-button">
-                        <InputLabel htmlFor="select-question">
-                            Question
-                        </InputLabel>
-                        <Select
-                            native
-                            value={selectValue}
-                            onChange={handleSelectChange}
-                            name="select-question"
-                            required
+        <Fragment>
+            <AppBar currentActive={0}/>
+            <div id="rootDiv">
+                <form autoComplete="off" onSubmit={handleSubmit}>
+                    <Paper id="paper">
+                        <Typography
+                            variant="h4"
+                            gutterBottom
+                            style={{ fontFamily: "Montserrat" }}
                         >
-                            <option value=""></option>
-                            {questions.map(question => (
-                                <option key={question._id} value={question._id}>
-                                    {question.title}
-                                </option>
-                            ))}
-                        </Select>
-                    </FormControl>
-                    <FormControl id="room-field" error>
-                        <TextField
-                            value={selectedRoom}
-                            onChange={handleRoomChange}
-                            label="Room ID"
-                            type="number"
-                            margin="normal"
-                            variant="filled"
-                            required
-                        />
-                    </FormControl>
-                    <FormControl id="room-field" error>
-                        <TextField
-                            value={totalTime}
-                            onChange={handleTimeChange}
-                            label="Time"
-                            type="number"
-                            margin="normal"
-                            variant="filled"
-                            required
-                        />
-                    </FormControl>
-                    <br />
-                    <Button
-                        type="submit"
-                        color="primary"
-                        variant="contained"
-                        id="start-button"
-                    >
-                        Start
-                    </Button>
-                </Paper>
-            </form>
-            {questionData !== null? <Question questionData={questionData} width="70vw"/>: null}
-        </div>
+                            START A ROOM
+                        </Typography>
+                        <FormControl variant="filled" id="select-button">
+                            <InputLabel htmlFor="select-question">
+                                Question
+                            </InputLabel>
+                            <Select
+                                native
+                                value={selectValue}
+                                onChange={handleSelectChange}
+                                name="select-question"
+                                required
+                            >
+                                <option value=""></option>
+                                {questions.map(question => (
+                                    <option
+                                        key={question._id}
+                                        value={question._id}
+                                    >
+                                        {question.title}
+                                    </option>
+                                ))}
+                            </Select>
+                        </FormControl>
+                        <FormControl id="room-field" error>
+                            <TextField
+                                value={selectedRoom}
+                                onChange={handleRoomChange}
+                                label="Room ID"
+                                type="number"
+                                margin="normal"
+                                variant="filled"
+                                required
+                            />
+                        </FormControl>
+                        <FormControl id="room-field" error>
+                            <TextField
+                                value={totalTime}
+                                onChange={handleTimeChange}
+                                label="Time"
+                                type="number"
+                                margin="normal"
+                                variant="filled"
+                                required
+                            />
+                        </FormControl>
+                        <br />
+                        <Button
+                            type="submit"
+                            color="primary"
+                            variant="contained"
+                            id="start-button"
+                        >
+                            Start
+                        </Button>
+                    </Paper>
+                </form>
+                {questionData !== null ? (
+                    <Question questionData={questionData} width="70vw" />
+                ) : null}
+            </div>
+        </Fragment>
     );
 };
