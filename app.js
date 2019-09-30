@@ -3,11 +3,8 @@ const path = require('path');
 const app = express();
 const http = require('http').Server(app);
 const Question = require("./models/questionsModel");
-const seedDB = require("./seed");
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const {c, cpp, python, java} = require('compile-run');
-const keys = require('./public/javascripts/keys.js');
 const cors = require('cors');
 const apiRoutes = require('./routes/api');
 //========================
