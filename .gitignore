@@ -1,4 +1,6 @@
-info.txt
-/node_modules
-FinalCA.docx
-config.js
+.DS_Store
+node_modules/
+.env
+*.orig
+.idea/
+.vscode/

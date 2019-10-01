@@ -7,10 +7,12 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const apiRoutes = require('./routes/api');
+
+require('dotenv').config()
 //========================
 // MongoDB setup
 //========================
-mongoose.connect("mongodb://localhost/questionsDB", { useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(process.env.MONGO_URI || "mongodb://localhost/questionsDB", { useNewUrlParser: true, useUnifiedTopology: true});
 // seedDB();
 
 //=======================

@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const Question = require("../models/questionsModel");
-const config = require('../config.json');
 const jwt = require('jsonwebtoken');
 
 router.get("/question", async (req,res) =>{
@@ -51,9 +50,9 @@ router.delete('/question', async (req, res) => {
 
 router.post('/login', (req,res) => {
     const {password} = req.body;
-    if(password != config.password) return res.send({auth: false})
+    if(password != process.env.PASSWORD) return res.send({auth: false})
 
-    const token = jwt.sign({}, config.secret);
+    const token = jwt.sign({}, process.env.SECRET);
     res.send({auth: true, token})
 })
 
