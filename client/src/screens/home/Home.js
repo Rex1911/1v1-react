@@ -32,6 +32,9 @@ export default props => {
                 >
                     {buttons}
                 </ButtonGroup>
+                <br/>
+                <Typogrpahy variant="h5">Or login to</Typogrpahy>
+                <Button variant ="contained" color="primary" style={{margin: "20px 0px"}} onClick={() => props.history.push('/admin')}>Admin Panel</Button>
             </Paper>
         </div>
     );
