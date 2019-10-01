@@ -113,44 +113,49 @@ export default props => {
     const handleSubmit = async () => {
         setOutput("Compiling...");
         setPassedFailedList([]);
-        let res = await fetch("http://localhost:8080/compile", {
-            method: "POST",
-            headers: {
-                "Content-type": "application/json; charset=UTF-8"
-            },
-            body: JSON.stringify({
-                code: lang.langCode,
-                source: code,
-                input: questionData.privateCases[0]
-            })
-        });
-        let { stdout, stderr } = await res.json();
+        try {
+            let res = await fetch("http://localhost:8080/compile", {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                },
+                body: JSON.stringify({
+                    code: lang.langCode,
+                    source: code,
+                    input: questionData.privateCases[0]
+                })
+            });
+            let { stdout, stderr } = await res.json();
 
-        if (stderr) {
-            setOutput(stderr);
-            return;
-        }
-
-        let answers = stdout.split("\n");
-        let updatedList = [];
-        let _correctAnswers = 0;
-        for (let i = 0; i < questionData.privateCasesAnswer.length; i++) {
-            // eslint-disable-next-line
-            if (answers[i] == questionData.privateCasesAnswer[i]) {
-                _correctAnswers++;
-                updatedList.push("passed");
-            } else {
-                updatedList.push("failed");
+            if (stderr) {
+                setOutput(stderr);
+                return;
             }
+
+            let answers = stdout.split("\n");
+            let updatedList = [];
+            let _correctAnswers = 0;
+            for (let i = 0; i < questionData.privateCasesAnswer.length; i++) {
+                // eslint-disable-next-line
+                if (answers[i] == questionData.privateCasesAnswer[i]) {
+                    _correctAnswers++;
+                    updatedList.push("passed");
+                } else {
+                    updatedList.push("failed");
+                }
+            }
+            if (_correctAnswers === questionData.noOfPrivateCases) {
+                clearInterval(timer.current);
+                setGameState("won");
+                socket.current.emit("gameOver", props.match.params.roomid);
+            }
+            setCorrectAnswers(_correctAnswers);
+            setOutput("");
+            setPassedFailedList(updatedList);
+        } catch (e) {
+            console.log(e);
+            setOutput("Something went wrong! Please try again!");
         }
-        if (_correctAnswers === questionData.noOfPrivateCases) {
-            clearInterval(timer.current);
-            setGameState("won");
-            socket.current.emit("gameOver", props.match.params.roomid);
-        }
-        setCorrectAnswers(_correctAnswers);
-        setOutput(stdout);
-        setPassedFailedList(updatedList);
     };
 
     let modal;
