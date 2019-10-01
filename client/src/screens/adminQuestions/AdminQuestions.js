@@ -24,7 +24,7 @@ export default () => {
     };
 
     const handleEditClick = i => {
-        let tempQuestion = questions[i];
+        let tempQuestion = {...questions[i]};
         tempQuestion.testCasesAnswer = tempQuestion.testCasesAnswer.join("\n");
         tempQuestion.privateCasesAnswer = tempQuestion.privateCasesAnswer.join(
             "\n"

@@ -34,7 +34,7 @@ router.put('/question', async (req, res) => {
         res.send({isSaved:true})
     } catch (e) {
         console.log(e);
-        res.send({isSave:false})
+        res.send({isSaved:false})
     }
 });
 
