@@ -1,6 +1,4 @@
 import React from "react";
-// eslint-disable-next-line
-import brace from "brace";
 import AceEditor from "react-ace";
 import displayTime from '../../util/time'
 
