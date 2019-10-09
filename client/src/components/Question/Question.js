@@ -18,18 +18,8 @@ export default props => {
             <div id="questionArea">
                 <Typography variant="subtitle2">QUESTION</Typography>
                 <pre style={{fontSize: 15}}>{questionData.main}</pre>
-                <Typography variant="subtitle2">INPUT FORMAT</Typography>
-                <pre style={{fontSize: 15}}>{questionData.input}</pre>
-                <Typography variant="subtitle2">OUTPUT FORMAT</Typography>
-                <pre style={{fontSize: 15}}>{questionData.output}</pre>
-                <Typography variant="subtitle2">CONSTRAINTS</Typography>
-                <pre style={{fontSize: 15}}>{questionData.constraints}</pre>
-                <Typography variant="subtitle2">INPUT EXAMPLE</Typography>
-                <pre style={{fontSize: 15, backgroundColor:"#EAECEE", padding: 10}}>{questionData.exampleIp}</pre>
-                <Typography variant="subtitle2">OUTPUT EXAMPLE</Typography>
+                <Typography variant="subtitle2">REQUIRED OUTPUT</Typography>
                 <pre style={{fontSize: 15, backgroundColor:"#EAECEE", padding: 10}}>{questionData.exampleOp}</pre>
-                <Typography variant="subtitle2">EXPLANATION</Typography>
-                <pre style={{fontSize: 15}}>{questionData.explanation}</pre>
             </div>
         </Paper>
     );

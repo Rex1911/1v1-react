@@ -33,9 +33,6 @@ export default (props) => {
                 <button className="editor-button" id="run" onClick={props.onClickRun}>
                     RUN
                 </button>
-                <button className="editor-button" id="submit" onClick={props.onClickSubmit}>
-                    SUBMIT
-                </button>
                 <button className="editor-button" id="submit" onClick={props.onClickQuestion}>
                     Question ↑
                 </button>

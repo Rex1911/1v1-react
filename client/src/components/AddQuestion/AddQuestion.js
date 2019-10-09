@@ -13,33 +13,8 @@ export default props => {
     const [mainQuestion, setMainQuestion] = useState(
         props.question.question.main || ""
     );
-    const [inputFormat, setInputFormat] = useState(
-        props.question.question.input || ""
-    );
-    const [outputFormat, setOutputFormat] = useState(
-        props.question.question.output || ""
-    );
-    const [constraints, setConstraints] = useState(
-        props.question.question.constraints || ""
-    );
-    const [exampleIp, setExampleIp] = useState(
-        props.question.question.exampleIp || ""
-    );
     const [exampleOp, setExampleOp] = useState(
         props.question.question.exampleOp || ""
-    );
-    const [explanation, setExplanation] = useState(
-        props.question.question.explanation || ""
-    );
-    const [testCases, setTestCases] = useState(props.question.testCases || "");
-    const [testCasesAnswer, setTestCasesAnswer] = useState(
-        props.question.testCasesAnswer || ""
-    );
-    const [privateCases, setPrivateCases] = useState(
-        props.question.privateCases || ""
-    );
-    const [privateCasesAnswer, setPrivateCasesAnswers] = useState(
-        props.question.privateCasesAnswer || ""
     );
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [successSnackbar, setSuccessSnackbar] = useState(false);
@@ -47,37 +22,13 @@ export default props => {
 
     const handleSubmit = async e => {
         e.preventDefault();
-        let formattedTestCases = [testCases];
-        let formattedTestCasesAns = testCasesAnswer.split("\n").map((answer) => answer.trim());
-        if (formattedTestCasesAns[formattedTestCasesAns.length - 1] === "")
-            formattedTestCasesAns.pop();
-        let noOfTestCases = formattedTestCasesAns.length;
-
-        let formattedPrivateCases = [privateCases];
-        let formattedPrivateCasesAns = privateCasesAnswer.split("\n").map((answer) => answer.trim());;
-        if (
-            formattedPrivateCasesAns[formattedPrivateCasesAns.length - 1] === ""
-        )
-            formattedPrivateCasesAns.pop();
-        let noOfPrivateCases = formattedPrivateCasesAns.length;
         let data = {
-            day: 1,
             question: {
                 main: mainQuestion,
-                input: inputFormat,
-                output: outputFormat,
-                constraints: constraints,
-                exampleIp: exampleIp,
                 exampleOp: exampleOp,
-                explanation: explanation
             },
             title: title,
-            noOfTestCases: noOfTestCases,
-            testCases: formattedTestCases,
-            testCasesAnswer: formattedTestCasesAns,
-            noOfPrivateCases: noOfPrivateCases,
-            privateCases: formattedPrivateCases,
-            privateCasesAnswer: formattedPrivateCasesAns
+            testCasesAnswer: [exampleOp],
         };
 
         console.log(data);
@@ -103,19 +54,10 @@ export default props => {
                 setSuccessSnackbar(true);
                 setTitle('');
                 setMainQuestion('')
-                setInputFormat('');
-                setOutputFormat('');
-                setConstraints('');
-                setExampleIp('');
                 setExampleOp('');
-                setExplanation('');
-                setTestCases('');
-                setTestCasesAnswer('');
-                setPrivateCases('');
-                setPrivateCasesAnswers('');
             } else {
                 setSnackbarOpen(true);
-                setErrorSnackbar(true);    
+                setErrorSnackbar(true);
             }
         } catch (e) {
             console.log(e);
@@ -198,109 +140,9 @@ export default props => {
                             variant="outlined"
                             multiline
                             required
-                            label="Input Format"
-                            value={inputFormat}
-                            onChange={e => setInputFormat(e.target.value)}
-                            style={{ marginTop: 20 }}
-                        ></TextField>
-                    </FormControl>
-                    <FormControl fullWidth>
-                        <TextField
-                            variant="outlined"
-                            multiline
-                            required
-                            label="Output Format"
-                            value={outputFormat}
-                            onChange={e => setOutputFormat(e.target.value)}
-                            style={{ marginTop: 20 }}
-                        ></TextField>
-                    </FormControl>
-                    <FormControl fullWidth>
-                        <TextField
-                            variant="outlined"
-                            multiline
-                            required
-                            label="Constraints"
-                            value={constraints}
-                            onChange={e => setConstraints(e.target.value)}
-                            style={{ marginTop: 20 }}
-                        ></TextField>
-                    </FormControl>
-                    <FormControl fullWidth>
-                        <TextField
-                            variant="outlined"
-                            multiline
-                            required
-                            label="Example Input"
-                            value={exampleIp}
-                            onChange={e => setExampleIp(e.target.value)}
-                            style={{ marginTop: 20 }}
-                        ></TextField>
-                    </FormControl>
-                    <FormControl fullWidth>
-                        <TextField
-                            variant="outlined"
-                            multiline
-                            required
-                            label="Example Output"
+                            label="Output"
                             value={exampleOp}
                             onChange={e => setExampleOp(e.target.value)}
-                            style={{ marginTop: 20 }}
-                        ></TextField>
-                    </FormControl>
-                    <FormControl fullWidth>
-                        <TextField
-                            variant="outlined"
-                            multiline
-                            label="Explanation"
-                            value={explanation}
-                            onChange={e => setExplanation(e.target.value)}
-                            style={{ marginTop: 20 }}
-                        ></TextField>
-                    </FormControl>
-                    <FormControl fullWidth>
-                        <TextField
-                            variant="outlined"
-                            multiline
-                            required
-                            label="Test Cases"
-                            value={testCases}
-                            onChange={e => setTestCases(e.target.value)}
-                            style={{ marginTop: 20 }}
-                        ></TextField>
-                    </FormControl>
-                    <FormControl fullWidth>
-                        <TextField
-                            variant="outlined"
-                            multiline
-                            required
-                            label="Test Cases Answers"
-                            value={testCasesAnswer}
-                            onChange={e => setTestCasesAnswer(e.target.value)}
-                            style={{ marginTop: 20 }}
-                        ></TextField>
-                    </FormControl>
-                    <FormControl fullWidth>
-                        <TextField
-                            variant="outlined"
-                            multiline
-                            required
-                            label="Private Cases"
-                            value={privateCases}
-                            onChange={e => setPrivateCases(e.target.value)}
-                            style={{ marginTop: 20 }}
-                        ></TextField>
-                    </FormControl>
-                    <FormControl fullWidth>
-                        <TextField
-                            variant="outlined"
-                            multiline
-                            required
-                            label="Private Cases Answers"
-                            value={privateCasesAnswer}
-                            onChange={e =>
-                                setPrivateCasesAnswers(e.target.value)
-                            }
                             style={{ marginTop: 20 }}
                         ></TextField>
                     </FormControl>

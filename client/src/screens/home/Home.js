@@ -21,7 +21,7 @@ export default props => {
     return (
         <div style={{height: '100vh'}}>
             <Paper style={{width: '70vw', margin: '20vh auto', textAlign: 'center'}}>
-                <Typogrpahy variant="h4" style={{padding: 20}}>Welcome to Clash of Codes</Typogrpahy>
+                <Typogrpahy variant="h4" style={{padding: 20}}>Welcome to dotPY</Typogrpahy>
                 <Typogrpahy variant="h5" style={{padding: 20}}>Please select a room</Typogrpahy>
                 <ButtonGroup
                     variant="contained"

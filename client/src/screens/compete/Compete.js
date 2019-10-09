@@ -12,7 +12,6 @@ export default props => {
     const [timeRemaining, setTimeRemaining] = useState(-1);
     const [totalTime, setTotaltime] = useState(0);
     const [output, setOutput] = useState("");
-    const [correctAnswers, setCorrectAnswers] = useState(0);
     const [passedFailedList, setPassedFailedList] = useState([]);
     const [lang, setLang] = useState({ lang: "c_cpp", langCode: 1 });
     const [code, setCode] = useState();
@@ -100,7 +99,7 @@ export default props => {
                 body: JSON.stringify({
                     code: lang.langCode,
                     source: code,
-                    input: questionData.testCases[0]
+                    input: ""
                 })
             });
             let { stdout, stderr } = await res.json();
@@ -109,65 +108,17 @@ export default props => {
                 setOutput(stderr);
                 return;
             }
-            let answers = stdout.split("\n");
-            let updatedList = [];
-            for (let i = 0; i < questionData.testCasesAnswer.length; i++) {
-                // eslint-disable-next-line
-                if (answers[i] == questionData.testCasesAnswer[i]) {
-                    updatedList.push("passed");
-                } else {
-                    updatedList.push("failed");
-                }
+            if(stdout.endsWith('\n')) {
+                stdout = stdout.substring(0, stdout.length-1);
             }
-            setOutput(stdout);
-            setPassedFailedList(updatedList);
-        } catch (e) {
-            console.log(e);
-            setOutput("Something went wrong! Please try again!");
-        }
-    };
-
-    const handleSubmit = async () => {
-        setOutput("Compiling...");
-        setPassedFailedList([]);
-        try {
-            let res = await fetch("http://localhost:8080/compile", {
-                method: "POST",
-                headers: {
-                    "Content-type": "application/json; charset=UTF-8"
-                },
-                body: JSON.stringify({
-                    code: lang.langCode,
-                    source: code,
-                    input: questionData.privateCases[0]
-                })
-            });
-            let { stdout, stderr } = await res.json();
-
-            if (stderr) {
-                setOutput(stderr);
-                return;
-            }
-
-            let answers = stdout.split("\n");
-            let updatedList = [];
-            let _correctAnswers = 0;
-            for (let i = 0; i < questionData.privateCasesAnswer.length; i++) {
-                // eslint-disable-next-line
-                if (answers[i] == questionData.privateCasesAnswer[i]) {
-                    _correctAnswers++;
-                    updatedList.push("passed");
-                } else {
-                    updatedList.push("failed");
-                }
-            }
-            if (_correctAnswers === questionData.noOfPrivateCases) {
+            //eslint-disable-next-line
+            if(stdout == questionData.testCasesAnswer[0]) {
                 clearInterval(timer.current);
                 setGameState("won");
                 socket.current.emit("gameOver", props.match.params.roomid);
             }
-            setCorrectAnswers(_correctAnswers);
-            setOutput("");
+            let updatedList = [];
+            setOutput(stdout);
             setPassedFailedList(updatedList);
         } catch (e) {
             console.log(e);
@@ -191,8 +142,6 @@ export default props => {
         modal = (
             <Modal>
                 The times up!
-                <br />
-                Passed cases: {correctAnswers}
             </Modal>
         );
     else if (gameState === "won")
@@ -233,7 +182,6 @@ export default props => {
                 output={output}
                 time={timeRemaining}
                 onClickRun={handleRun}
-                onClickSubmit={handleSubmit}
                 onClickQuestion={scrollToQuestion}
                 onLangChange={handleLangChange}
                 onCodeChange={handleEditorChange}
