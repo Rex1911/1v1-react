@@ -1,7 +1,7 @@
 #topBar {
     width: 100%;
     display:grid;
-    grid-template-columns: 40% 20% 20% 20%;
+    grid-template-columns: 40% 20% 13.33% 13.33% 13.33%;
     align-items: center;
     justify-content: center;
     justify-items: center;

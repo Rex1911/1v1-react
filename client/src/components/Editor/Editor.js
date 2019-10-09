@@ -12,10 +12,10 @@ import "brace/ext/language_tools";
 
 export default (props) => {
     const setResultOutput = () => {
-        let {passedFailedList} = props;
+        let { passedFailedList } = props;
         let list = passedFailedList.map((result, i) => {
-            if(result === 'passed') return <p key={i}>Test Case {i+1} <span id="passed">passed</span></p>
-            return <p key={i}>Test Case {i+1} <span id="failed">failed</span></p>
+            if (result === 'passed') return <p key={i}>Test Case {i + 1} <span id="passed">passed</span></p>
+            return <p key={i}>Test Case {i + 1} <span id="failed">failed</span></p>
         })
         return list;
     }
@@ -35,6 +35,9 @@ export default (props) => {
                 </button>
                 <button className="editor-button" id="submit" onClick={props.onClickSubmit}>
                     SUBMIT
+                </button>
+                <button className="editor-button" id="submit" onClick={props.onClickQuestion}>
+                    Question ↑
                 </button>
             </div>
 

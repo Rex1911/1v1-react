@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import Button from "@material-ui/core/Button";
 import Question from "../../components/Question";
 import Editor from "../../components/Editor";
 import Modal from "../../components/Modal";
@@ -8,8 +9,8 @@ import displayTime from "../../util/time";
 export default props => {
     const [gameState, setGameState] = useState("waiting");
     const [questionData, setQuestionData] = useState();
-    const [totalTime, setTotalTime] = useState();
-    const [timeElapsed, setTimeElapsed] = useState(0);
+    const [timeRemaining, setTimeRemaining] = useState(-1);
+    const [totalTime, setTotaltime] = useState(0);
     const [output, setOutput] = useState("");
     const [correctAnswers, setCorrectAnswers] = useState(0);
     const [passedFailedList, setPassedFailedList] = useState([]);
@@ -18,17 +19,20 @@ export default props => {
 
     let socket = useRef();
     let timer = useRef();
+    let editorButton = useRef(null);
+
     useEffect(() => {
         socket.current = io();
         socket.current.emit("joinContest", props.match.params.roomid);
 
         socket.current.on("start", data => {
+            setTimeRemaining(data.totalTime * 60);
+            setTotaltime(data.totalTime * 60);
             if (timer.current) return;
             setQuestionData(data.question[0]);
-            setTotalTime(data.totalTime * 60);
             setGameState("running");
             timer.current = setInterval(() => {
-                setTimeElapsed(currentTime => currentTime + 1);
+                setTimeRemaining(currentTime => currentTime - 1);
             }, 1000);
         });
         socket.current.on("lost", () => {
@@ -42,11 +46,24 @@ export default props => {
     }, [props.match.params.roomid]);
 
     useEffect(() => {
-        if (timeElapsed === totalTime) {
+        if (timeRemaining === 0) {
             clearInterval(timer.current);
             setGameState("timeup");
         }
-    }, [totalTime, timeElapsed]);
+    }, [timeRemaining]);
+
+    useEffect(() => {
+        document.addEventListener("scroll", () => {
+            let style = "margin-left: 47vw; width: 6vw; height: 4vh; z-index: 100; position: fixed; bottom: 50px;";
+            let scrollPosition = document.documentElement.scrollTop + window.innerHeight - 50;
+            if (scrollPosition > document.body.offsetHeight - window.innerHeight) {
+                let opacity = ((document.body.offsetHeight - scrollPosition) / window.innerHeight)-0.1;
+                editorButton.current.style = style + 'opacity: ' + opacity;
+                return;
+            }
+            editorButton.current.style = style + "opacity: 0.95;";
+        });
+    }, []);
 
     const handleLangChange = e => {
         switch (e.target.value) {
@@ -158,6 +175,14 @@ export default props => {
         }
     };
 
+    const scrollToQuestion = () => {
+        window.scroll({ top: 0, left: 0, behavior: 'smooth' });
+    }
+
+    const scrollToEditor = () => {
+        window.scrollTo({ top: (1 * document.body.scrollHeight), left: 0, behavior: 'smooth' });
+    }
+
     let modal;
     if (gameState === "waiting")
         modal = <Modal>WAITING FOR ADMIN TO START</Modal>;
@@ -175,7 +200,7 @@ export default props => {
             <Modal>
                 You won
                 <br />
-                Final time: {displayTime(timeElapsed)}
+                Final time: {displayTime(totalTime - timeRemaining)}
             </Modal>
         );
     else modal = null;
@@ -187,19 +212,29 @@ export default props => {
                 questionData={
                     questionData
                         ? {
-                              ...questionData.question,
-                              title: questionData.title
-                          }
+                            ...questionData.question,
+                            title: questionData.title
+                        }
                         : ""
                 }
                 width="90vw"
             />
+            <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                onClick={scrollToEditor}
+                ref={editorButton}
+            >
+                <span>Editor&darr;</span>
+            </Button>
             <Editor
                 code={code}
                 output={output}
-                time={timeElapsed}
+                time={timeRemaining}
                 onClickRun={handleRun}
                 onClickSubmit={handleSubmit}
+                onClickQuestion={scrollToQuestion}
                 onLangChange={handleLangChange}
                 onCodeChange={handleEditorChange}
                 mode={lang.lang}
