@@ -79,6 +79,8 @@ export default props => {
             case "4":
                 setLang({ lang: "java", langCode: 4 });
                 break;
+            case "5":
+                setLang({lang: "python", langCode: 5});
             default:
                 break;
         }

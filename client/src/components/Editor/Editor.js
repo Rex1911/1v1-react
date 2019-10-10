@@ -26,8 +26,9 @@ export default (props) => {
                 <select id="lang" onChange={props.onLangChange}>
                     <option value="1">C</option>
                     <option value="2">C++</option>
-                    <option value="3">Python</option>
+                    <option value="3">Python3</option>
                     <option value="4">Java</option>
+                    <option value="5">Python2</option>
                 </select>
                 <div id="timer">{displayTime(props.time)}</div>
                 <button className="editor-button" id="run" onClick={props.onClickRun}>
